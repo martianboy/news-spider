@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang='fa' dir='rtl'>
+<head>
+	<meta charset='utf-8'>
+	<title>خزنده منابع خبری فارسی</title>
+
+	<link rel="stylesheet" type='text/css' href="css/style.css">
+	<link rel="stylesheet" type='text/css' href="css/font-awesome.css">
+
+	<script src="js/bundle.js" type="text/javascript" charset="utf-8" async defer></script>
+</head>
+<body>
+	<header>
+		<div role='logo'></div>
+		<nav class='radio-button-group' role='main-app-view-switcher'>
+			<div class='radio-button'>
+				<input name='main-app-view' type='radio' id='main-app-view-dashboard' value='dashboard'>
+				<label for='main-app-view-dashboard'><span>داشبورد</span></label>
+			</div>
+			<div class='radio-button'>
+				<input name='main-app-view' type='radio' id='main-app-view-feeds' value='feed-sources' checked='checked'>
+				<label for='main-app-view-feeds'><span>فیدها</span></label>
+			</div>
+			<div class='radio-button'>
+				<input name='main-app-view' type='radio' id='main-app-view-settings' value='settings'>
+				<label for='main-app-view-settings'><span>تنظیمات</span></label>
+			</div>
+		</nav>
+		<div class='flex-left'>
+			<div class="slideThree">	
+				<input type="checkbox" value="None" id="slideThree" name="check" />
+				<label for="slideThree"></label>
+			</div>
+		</div>
+	</header>
+
+	<div class='container' id='dashboard'>
+		<div id='stats'>
+			<div class='stat-card'>
+				<span class='number'>۱۳۸۲۱</span>
+				<span class='label'>کل اسناد دریافت‌شده</span>
+			</div>
+			<div class='stat-card'>
+				<span class='number'>۸/۱۶</span>
+				<span class='label'>جاب‌های فعال</span>
+			</div>
+			<div class='stat-card'>
+				<span class='number'>۱۸/۳۸</span>
+				<span class='label'>منابع فعال</span>
+			</div>
+			<div class='stat-card'>
+				<span class='number'>۱۹۲٫۴ مگابایت</span>
+				<span class='label'>حجم کل فایل‌ها</span>
+			</div>
+		</div>
+	</div>
+	<div class='container active' id='feed-sources'>
+		<h2>لیست فیدها:</h2>
+		<table>
+			<colgroup>
+				<col style='width: 32px;'>
+				<col>
+				<col style='width: 200px; text-align: left'>
+				<col>
+			</colgroup>
+			<thead>
+				<tr>
+					<th></th>
+					<th>عنوان</th>
+					<th>آخرین درخواست</th>
+				</tr>
+			</thead>
+		</table>
+		<div class='scroller'>
+			<table>
+				<colgroup>
+					<col style='width: 32px;'>
+					<col>
+					<col style='width: 200px; text-align: left'>
+					<col>
+				</colgroup>
+
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class='container' id='settings'>
+	</div>
+</body>
+</html>
