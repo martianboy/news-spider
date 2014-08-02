@@ -1,5 +1,6 @@
 var _forEach = require('../lib/utils')._forEach;
 var extend = require('../lib/utils').extend;
+var El = require('../lib/dom').createEl;
 
 var View = {
 	init: function(options) {
@@ -22,7 +23,7 @@ var View = {
 	afterModelIsSet: function(model) {},
 	render: function() {
 		if (this.template)
-			this.el.appendChild(this.template(this.model));
+			this.el.appendChild(this.templateFn(this.model));
 	},
 
 	delegateEvents: function() {
@@ -69,6 +70,38 @@ var View = {
 			cancelable: true,
 			detail: detail
 		}, options || {})));
+	},
+
+	templateFn: function(model) {
+		function createTemplate(template) {
+			function resolve(keyPath) {
+				if (keyPath.startsWith('{{') && keyPath.endsWith('}}')) {
+					return keyPath
+						.slice(2, keyPath.length - 2)
+						.split('.')
+						.reduce(function(val, attr) {
+							return val[attr];
+						}, model);
+				}
+				else
+					return keyPath;
+			}
+
+			if (!template)
+				return [];
+
+			return Object.keys(template).map(function(key) {
+				var value = template[key];
+				if (typeof value === 'string')
+					return El(key, resolve(value));
+				else if (typeof value === 'function')
+					return El(key, value.call(null, model).toString());
+				else // if (typeof value === 'object')
+					return El(key, createTemplate(value));
+			});
+		}
+
+		return createTemplate(this.template);
 	}
 };
 

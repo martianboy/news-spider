@@ -15,14 +15,16 @@ module.exports = View.extend({
 		FeedSources.fetch();
 	},
 
-	template: function(feed) {
-		return El('tr', [
-			El('td.on', 
-				El('button.fa', '\uf046')
-			),
-			El('td', feed.title),
-			El('td[data-field=last_active]', moment(feed.last_active).calendar())
-		]);
+	template: {
+		tr: {
+			'td.on': {
+				'button.fa': '\uf046'
+			},
+			td: '{{title}}',
+			'td[data-field=last_active]': function(feed) {
+				return moment(feed.last_active).calendar();
+			}
+		}
 	},
 
 	bindings: {
@@ -41,7 +43,12 @@ module.exports = View.extend({
 		}
 
 		FeedSources
-			.map(this.template)
-			.each(this.el.appendChild.bind(this.el));
+			.map(this.templateFn.bind(this))
+			.each(function(child) {
+				if (Array.isArray(child))
+					child.forEach(this.el.appendChild.bind(this.el))
+				else
+					this.el.appendChild(child);
+			}.bind(this));
 	}
 });
