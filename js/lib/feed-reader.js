@@ -3,11 +3,12 @@ var convertRss1 = require('./rss1');
 var convertRss2 = require('./rss2');
 var convertAtom = require('./atom');
 
-xhr({
-	url: 'http://farsnews.com/rss.php',
-	dataType: 'xml'
-}).then(convertFeed, errorHandler)
-.then(console.log.bind(console));
+module.exports = function(url) {
+	return xhr({
+		url: 'http://farsnews.com/rss.php',
+		dataType: 'xml'
+	}).then(convertFeed, errorHandler);
+}
 
 function convertFeed(dom) {
 	var document = dom.documentElement;
