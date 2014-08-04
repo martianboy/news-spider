@@ -112,6 +112,11 @@ IDBCursor.prototype.getAll = function() {
 
 function IDBStore(name, schema, db) {
 	_extend(this, { name: name, db: db }, schema);
+
+	function createIndex(options, index) {
+		this[index] = new IDBIndexWrapper(index, name, options);
+	}
+	_forEach(schema.indexes, createIndex.bind(this));
 }
 
 IDBStore.prototype.add = function() {
@@ -142,10 +147,14 @@ IDBStore.prototype.put = function() {
 
 		function addArray(array) {
 			array.forEach(function(obj) {
+				var key;
+				if (store.keyPath)
+					key = obj[key];
+
 				if (Array.isArray(obj))
 					addArray(obj);
 				else
-					store.put(obj);
+					store.put(obj, key);
 			});
 		}
 	});
@@ -160,10 +169,23 @@ IDBStore.prototype.getAll = function() {
 	}.bind(this));
 }
 
-IDBStore.prototype.query = function(index) {
-	if (index) {
 
-	}
+function IDBIndexWrapper(name, objectStore, options) {
+	this.name = name;
+	this.objectStore = objectStore;
+
+	this.unique = options.unique || false;
+	this.multiEntry = options.multiEntry || false;
 }
+
+IDBIndexWrapper.prototype.getAll = function() {
+	return this.db.transaction([this.name], 'readonly', function(trx) {
+		var index = trx.objectStore(this.objectStore).index(this.name);
+		var cursor = new IDBCursor(index);
+
+		return cursor.getAll();
+	}.bind(this));
+}
+
 
 module.exports = IDB;
